@@ -260,11 +260,11 @@ export const addLike = async (
     if (!user) throw new Error("can't like the post user not found");
 
     if (thread.likes.includes(userId)) {
-      console.log("Already liked");
-      return null;
+      const index = thread.likes.indexOf(userId);
+      thread.likes.splice(index, 1);
+    } else {
+      thread.likes.push(userId);
     }
-
-    thread.likes.push(userId);
 
     await thread.save();
 

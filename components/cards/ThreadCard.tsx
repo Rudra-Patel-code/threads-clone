@@ -83,21 +83,27 @@ const ThreadCard = ({
               className={`${isComment && "mb-10"}  mt-5 flex flex-col gap-3`}
             >
               <div className="flex gap-3.5">
-                <LikeButton
-                  currentUserId={currentUserMongooseID.toString()}
-                  isLiked={isLiked}
-                  threadId={id.toString()}
-                />
-
-                <Link href={`/thread/${id}`}>
-                  <Image
-                    src="/assets/reply.svg"
-                    alt="reply"
-                    width={24}
-                    height={24}
-                    className="cursor-pointer object-contain"
+                <div className="flex gap-1 items-center">
+                  <LikeButton
+                    currentUserId={currentUserMongooseID.toString()}
+                    isLiked={isLiked}
+                    threadId={id.toString()}
                   />
-                </Link>
+                  <p className="text-xs text-gray-1">{likes.length}</p>
+                </div>
+
+                <div className="flex gap-1 items-center">
+                  <Link href={`/thread/${id}`}>
+                    <Image
+                      src="/assets/reply.svg"
+                      alt="reply"
+                      width={24}
+                      height={24}
+                      className="cursor-pointer object-contain"
+                    />
+                  </Link>
+                  <p className="text-xs text-gray-1">{comments.length}</p>
+                </div>
 
                 {/* <Image
                   src="/assets/repost.svg"
