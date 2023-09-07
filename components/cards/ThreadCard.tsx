@@ -2,6 +2,8 @@ import { formatDateString } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import LikeButton from "../shared/LikeButton";
+import { string } from "zod";
 
 interface Props {
   id: string;
@@ -25,6 +27,8 @@ interface Props {
     };
   }[];
   isComment?: boolean;
+  likes: string[];
+  currentUserMongooseID: string;
 }
 
 const ThreadCard = ({
@@ -37,7 +41,11 @@ const ThreadCard = ({
   createdAt,
   comments,
   isComment,
+  likes,
+  currentUserMongooseID,
 }: Props) => {
+  const isLiked = likes?.includes(currentUserMongooseID) ? true : false;
+
   return (
     <article
       className={`flex w-full flex-col rounded-xl  ${
@@ -75,12 +83,10 @@ const ThreadCard = ({
               className={`${isComment && "mb-10"}  mt-5 flex flex-col gap-3`}
             >
               <div className="flex gap-3.5">
-                <Image
-                  src="/assets/heart-gray.svg"
-                  alt="heart"
-                  width={24}
-                  height={24}
-                  className="cursor-pointer object-contain"
+                <LikeButton
+                  currentUserId={currentUserMongooseID.toString()}
+                  isLiked={isLiked}
+                  threadId={id.toString()}
                 />
 
                 <Link href={`/thread/${id}`}>
@@ -93,7 +99,7 @@ const ThreadCard = ({
                   />
                 </Link>
 
-                <Image
+                {/* <Image
                   src="/assets/repost.svg"
                   alt="repost"
                   width={24}
@@ -106,7 +112,7 @@ const ThreadCard = ({
                   width={24}
                   height={24}
                   className="cursor-pointer object-contain"
-                />
+                /> */}
               </div>
 
               {isComment && comments.length > 0 && (

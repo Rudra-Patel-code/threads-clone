@@ -4,6 +4,7 @@ import { fetchThreadById } from "@/lib/actions/thread.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import { Children } from "react";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   if (!params.id) return null;
@@ -31,6 +32,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
           community={thread.community}
           createdAt={thread.createdAt}
           comments={thread.children}
+          likes={thread.likes}
+          currentUserMongooseID={userInfo._id}
         />
       </div>
 
@@ -52,8 +55,10 @@ const Page = async ({ params }: { params: { id: string } }) => {
             content={childItem.text}
             author={childItem.author}
             community={childItem.community}
+            likes={childItem.likes}
             createdAt={childItem.createdAt}
             comments={childItem.children}
+            currentUserMongooseID={userInfo._id}
             isComment
           />
         ))}

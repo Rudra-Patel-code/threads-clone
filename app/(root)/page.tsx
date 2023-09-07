@@ -1,11 +1,18 @@
 import ThreadCard from "@/components/cards/ThreadCard";
 import { fetchPosts } from "@/lib/actions/thread.actions";
+import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
+import { redirect } from "next/dist/server/api-utils";
 
 export default async function Home() {
   const user = await currentUser();
 
+  if (!user) return null;
+
   const results = await fetchPosts(1, 30);
+
+  const userInfo = await fetchUser(user?.id);
+
   return (
     <div>
       <h1 className="head-text text-left">Home</h1>
@@ -26,6 +33,8 @@ export default async function Home() {
                 community={post.community}
                 createdAt={post.createdAt}
                 comments={post.children}
+                likes={post.likes}
+                currentUserMongooseID={userInfo._id}
               />
             ))}
           </>
